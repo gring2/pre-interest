@@ -91,7 +91,10 @@ h2, h3, h5 {
 </style>
     </head>
     <body>
-        <div>
+        <header>
+            <h1>선이자 계산기</h1>
+        </header>
+        <main>
             <div class="form-row">
                 <label class="label" for="loanAmount"> 
                     대출금
@@ -153,7 +156,9 @@ h2, h3, h5 {
                 <h5 id="effectiveAnnualRate"></h5>
 
             </div>
-        </div>
+        </main>
+        <footer>
+        </footer>
        
         <script>
         function calculateCompoundInterest(loanAmount, upfrontInterestRate, annualInterestRate, years, legalMaximumRate) {
