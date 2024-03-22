@@ -1,0 +1,195 @@
+<html>
+    <head>
+        <script> (function(ss,ex){ window.ldfdr=window.ldfdr||function(){(ldfdr._q=ldfdr._q||[]).push([].slice.call(arguments));}; (function(d,s){ fs=d.getElementsByTagName(s)[0]; function ce(src){ var cs=d.createElement(s); cs.src=src; cs.async=1; fs.parentNode.insertBefore(cs,fs); }; ce('https://sc.lfeeder.com/lftracker_v1_'+ss+(ex?'_'+ex:'')+'.js'); })(document,'script'); })('3P1w24d2EBg8mY5n'); </script>
+        <style>
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: #333;
+    background-color: #f4f4f4;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-row label, .form-row input, .form-row span {
+    margin-right: 10px; /* 요소 간의 간격 조정 */
+    flex-shrink: 0; /* 요소가 줄어드는 것을 방지 */
+}
+
+.form-row input[type="number"] {
+    flex-grow: 1; /* 인풋 필드가 남은 공간을 가득 채우도록 설정 */
+    padding: 5px; /* 인풋 필드 내부 패딩 조정 */
+    height: 35px; /* 인풋 필드의 높이를 조정하여 주변 텍스트와 일치시킴 */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-row label {
+    flex-basis: 100px; /* 라벨의 기본 크기 설정 */
+    flex-grow: 0; /* 라벨 크기가 늘어나지 않도록 설정 */
+}
+
+.form-row span {
+    white-space: nowrap; /* 단위 텍스트가 줄바꿈 되지 않도록 설정 */
+}
+
+button {
+    width: auto;
+    padding: 8px 16px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    align-self: center; /* 버튼을 세로 중앙에 위치시킴 */
+    margin: 20px 0; /* 상단의 form-row와의 간격 조정 */
+}
+
+button:hover {
+    background-color: #004494;
+}
+
+h2, h3, h5 {
+    color: #0056b3;
+    text-align: center; /* 제목을 중앙에 위치시킴 */
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .form-row label {
+        flex-basis: auto; /* 모바일 뷰에서는 라벨 크기를 자동으로 조정 */
+    }
+
+    .form-row {
+        flex-direction: column; /* 모바일 뷰에서는 요소들을 세로로 쌓음 */
+        align-items: stretch; /* 자식 요소들을 부모 요소의 너비에 맞춤 */
+    }
+
+    .form-row label, .form-row input, .form-row span {
+        margin-right: 0; /* 모바일 뷰에서는 요소 간 간격을 제거 */
+        margin-bottom: 5px; /* 요소 간 세로 간격 추가 */
+    }
+
+    .form-row input[type="number"] {
+        height: auto; /* 모바일 뷰에서는 인풋 필드의 높이를 자동으로 조정 */
+    }
+}
+
+</style>
+    </head>
+    <body>
+        <div>
+            <div class="form-row">
+                <label class="label" for="loanAmount"> 
+                    대출금
+                </label>
+                <span>
+                    <input type="number" placeholder="대출금" id="loanAmount">
+                </span>
+                <span>
+                   만원
+                </span>
+                
+            </div>
+            <div class="form-row">
+                <label for="upfrontInterestRate">
+                    선이자율
+                </label>
+                <span>
+                    <input type="number" placeholder="선이자율" id="upfrontInterestRate">
+                </span>
+                <span>
+                   %
+                </span>
+                
+            </div>
+            <div class="form-row">
+                <label for="annualInterestRate">
+                    연이자율
+                </label>
+                <span>
+                    <input type="number" placeholder="연이자율" id="annualInterestRate">
+                </span>
+                <span>
+                    %
+                </span>
+                
+            </div>
+            <div class="form-row">
+                <label for="years">
+                    대출기간
+                </label>
+                <span>
+                    <input type="number" placeholder="대출기간" id="years">
+                </span>
+                <span>
+                    년
+                </span>
+               
+               
+            </div>
+            <div>
+                <button onclick="clickEvent()">계산하기</button>
+            </div>
+            <div>
+                <h2>이자 계산 결과</h2>
+
+                <h3>최대 법정이자: 20%</h3>
+                <h5 id="totalRepaymentAmount"></h5>
+                <h5 id ="totalInterest"></h5>
+                <h5 id="effectiveAnnualRate"></h5>
+
+            </div>
+        </div>
+       
+        <script>
+        function calculateCompoundInterest(loanAmount, upfrontInterestRate, annualInterestRate, years, legalMaximumRate) {
+            // 법정 최고 이자율 초과 시 조정
+            const effectiveAnnualRate = Math.min(annualInterestRate, legalMaximumRate);
+          
+            // 선이자 공제 후 실제 대출금 계산
+            const actualLoanAmount = loanAmount * (1 - upfrontInterestRate);
+          
+            // 복리 이자 계산 공식 적용
+            const totalRepaymentAmount = actualLoanAmount * Math.pow((1 + effectiveAnnualRate), years);
+          
+            // 총 상환 금액에서 실제 대출금을 빼서 순수 이자 금액 계산
+            const totalInterest = totalRepaymentAmount - actualLoanAmount;
+          
+            return {
+              totalRepaymentAmount: totalRepaymentAmount,
+              totalInterest: totalInterest,
+              effectiveAnnualRate: effectiveAnnualRate
+            };
+          }
+          function clickEvent() {
+            const loanAmount = document.getElementById('loanAmount').value;
+            const upfrontInterestRate = document.getElementById('upfrontInterestRate').value;
+            const annualInterestRate = document.getElementById('annualInterestRate').value;
+            const years = document.getElementById('years').value;
+            
+            // 예제 사용법
+            // 대출금: 10,000,000원, 선이자율: 10%, 연이자율: 25%, 대출 기간: 5년, 법정 최고 이자율: 20%
+            const result = calculateCompoundInterest(loanAmount*10000, upfrontInterestRate/100, annualInterestRate/100, years, 0.2);
+            // document.getElementById('totalRepaymentAmount').innerHTML = `총 상환 금액: ${result.totalRepaymentAmount.toFixed(2)}원`;
+            document.getElementById('totalInterest').innerHTML = `이자 금액: ${result.totalInterest.toFixed(2)}원`;
+            document.getElementById('effectiveAnnualRate').innerHTML = `적용된 연이자율: ${(result.effectiveAnnualRate * 100).toFixed(2)}%`;
+          }
+        
+          
+        </script>
+    </body>
+</html>
